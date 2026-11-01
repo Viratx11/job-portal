@@ -1,0 +1,26 @@
+# Maven & Java
+target/
+*.jar
+*.war
+*.class
+*.log
+.mvn/
+mvnw
+mvnw.cmd
+
+# Node & Frontend (Phase 2)
+node_modules/
+dist/
+.vite/
+
+# Environment & Secrets
+.env
+.env.*
+application-local.yml
+application-secret.yml
+
+# IDEs & OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
