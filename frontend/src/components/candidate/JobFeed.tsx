@@ -1002,7 +1002,7 @@ export const JobFeed: React.FC<JobFeedProps> = ({ onNavigate }) => {
         websiteUrl ? `Website / GitHub: ${websiteUrl}` : null,
         leetcodeProfile ? `LeetCode: ${leetcodeProfile}` : null,
         codeforcesProfile ? `Codeforces: ${codeforcesProfile}` : null,
-        `Resume PDF: /api/resumes/${resumeIdToUse}/file`,
+        `Resume PDF: ${resumeApi.getFileUrl(resumeIdToUse)}`,
       ]
         .filter(Boolean)
         .join('\n');
@@ -1793,7 +1793,7 @@ export const JobFeed: React.FC<JobFeedProps> = ({ onNavigate }) => {
                 )}
 
                 <a
-                  href={`/api/resumes/${activeResume.id}/file`}
+                  href={resumeApi.getFileUrl(activeResume.id)}
                   target="_blank"
                   rel="noreferrer"
                   className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 ml-auto shrink-0"
@@ -2495,7 +2495,7 @@ export const JobFeed: React.FC<JobFeedProps> = ({ onNavigate }) => {
                           </div>
                           <div className="flex items-center gap-2">
                             <a
-                              href={`/api/resumes/${activeResume.id}/file`}
+                              href={resumeApi.getFileUrl(activeResume.id)}
                               target="_blank"
                               rel="noreferrer"
                               className="bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1"
@@ -2503,7 +2503,7 @@ export const JobFeed: React.FC<JobFeedProps> = ({ onNavigate }) => {
                               <ExternalLink className="w-3.5 h-3.5" /> Preview PDF
                             </a>
                             <a
-                              href={`/api/resumes/${activeResume.id}/file?download=true`}
+                              href={resumeApi.getFileUrl(activeResume.id, '?download=true')}
                               className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1"
                             >
                               <Download className="w-3.5 h-3.5" /> Download PDF

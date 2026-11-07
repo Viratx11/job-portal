@@ -239,7 +239,7 @@ export const MyApplicationsPage: React.FC = () => {
                             </span>
                             <div className="flex items-center gap-2">
                               <a
-                                href={`/api/resumes/${app.resumeId}/file`}
+                                href={resumeApi.getFileUrl(app.resumeId)}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-1"
@@ -247,7 +247,7 @@ export const MyApplicationsPage: React.FC = () => {
                                 <ExternalLink className="w-3.5 h-3.5" /> Open PDF
                               </a>
                               <a
-                                href={`/api/resumes/${app.resumeId}/file?download=true`}
+                                href={resumeApi.getFileUrl(app.resumeId, '?download=true')}
                                 className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline flex items-center gap-1"
                               >
                                 <Download className="w-3.5 h-3.5" /> Download PDF

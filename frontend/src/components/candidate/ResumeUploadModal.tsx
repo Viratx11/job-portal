@@ -818,7 +818,7 @@ export const ResumeUploadModal: React.FC = () => {
               {activeResume && (
                 <div className="flex flex-wrap items-center gap-2 mt-1 sm:mt-0">
                   <a
-                    href={`/api/resumes/${activeResume.id}/file`}
+                    href={resumeApi.getFileUrl(activeResume.id)}
                     target="_blank"
                     rel="noreferrer"
                     className="text-xs font-bold bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-blue-100 dark:hover:bg-blue-900/60 transition"
@@ -826,7 +826,7 @@ export const ResumeUploadModal: React.FC = () => {
                     <ExternalLink className="w-3.5 h-3.5" /> Open PDF
                   </a>
                   <a
-                    href={`/api/resumes/${activeResume.id}/file?download=true`}
+                    href={resumeApi.getFileUrl(activeResume.id, '?download=true')}
                     className="text-xs font-bold bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition"
                   >
                     <Download className="w-3.5 h-3.5" /> Download PDF
@@ -1013,7 +1013,7 @@ export const ResumeUploadModal: React.FC = () => {
                       {isSelected ? 'Active Template' : 'Click to Apply'}
                     </span>
                     <a
-                      href={`/api/resumes/${activeResume.id}/file?download=true`}
+                      href={resumeApi.getFileUrl(activeResume.id, '?download=true')}
                       onClick={(e) => e.stopPropagation()}
                       className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-0.5"
                       title="Download PDF"
@@ -1036,7 +1036,7 @@ export const ResumeUploadModal: React.FC = () => {
                 </span>
                 <div className="flex items-center gap-2">
                   <a
-                    href={`/api/resumes/${activeResume.id}/file?t=${pdfTimestamp}`}
+                    href={resumeApi.getFileUrl(activeResume.id, `?t=${pdfTimestamp}`)}
                     target="_blank"
                     rel="noreferrer"
                     className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
@@ -1048,7 +1048,7 @@ export const ResumeUploadModal: React.FC = () => {
               <div className="w-full h-[520px] bg-slate-900 rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700">
                 <iframe
                   key={pdfTimestamp}
-                  src={`/api/resumes/${activeResume.id}/file?t=${pdfTimestamp}#toolbar=0`}
+                  src={resumeApi.getFileUrl(activeResume.id, `?t=${pdfTimestamp}#toolbar=0`)}
                   title="Resume PDF Preview"
                   className="w-full h-full border-0"
                 />

@@ -324,7 +324,11 @@ export const applicationApi = {
     apiClient.delete(`/api/applications/${applicationId}/notes/${noteId}`).then((r) => r.data),
 };
 
+const AI_API_BASE = (import.meta.env.VITE_AI_API_URL || '').trim().replace(/\/+$/, '');
+
 export const resumeApi = {
+  getFileUrl: (resumeId: number | string, suffix = '') =>
+    `${AI_API_BASE}/api/resumes/${resumeId}/file${suffix}`,
   createResume: (data: { title: string; template?: ResumeTemplate; visibility?: ResumeVisibility; isDefault?: boolean }) =>
     apiClient.post<ResumeResponse>('/api/resumes', data).then((r) => r.data),
   createFromLatex: (latexCode: string, title?: string) =>

@@ -1386,7 +1386,7 @@ export const RecruiterDashboard: React.FC = () => {
                             </a>
                           )}
                           <a
-                            href={`/api/resumes/${app.resumeId}/file`}
+                            href={resumeApi.getFileUrl(app.resumeId)}
                             target="_blank"
                             rel="noreferrer"
                             className="text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-1"
@@ -1395,7 +1395,7 @@ export const RecruiterDashboard: React.FC = () => {
                             {resume?.uploadedFileName || `Resume_${app.resumeId}.pdf`})
                           </a>
                           <a
-                            href={`/api/resumes/${app.resumeId}/file?download=true`}
+                            href={resumeApi.getFileUrl(app.resumeId, '?download=true')}
                             className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline flex items-center gap-1"
                           >
                             <Download className="w-3.5 h-3.5" /> Download PDF
@@ -1406,7 +1406,7 @@ export const RecruiterDashboard: React.FC = () => {
                       {/* Actions */}
                       <div className="flex flex-wrap items-center gap-2">
                         <a
-                          href={`/api/resumes/${app.resumeId}/file?download=true`}
+                          href={resumeApi.getFileUrl(app.resumeId, '?download=true')}
                           className="bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-300 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition"
                         >
                           <Download className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
@@ -1612,7 +1612,7 @@ export const RecruiterDashboard: React.FC = () => {
                           </div>
                           <div className="flex flex-wrap items-center gap-2">
                             <a
-                              href={`/api/resumes/${app.resumeId}/file`}
+                              href={resumeApi.getFileUrl(app.resumeId)}
                               target="_blank"
                               rel="noreferrer"
                               className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold px-3.5 py-2 rounded-lg text-xs flex items-center gap-1.5 transition"
@@ -1620,7 +1620,7 @@ export const RecruiterDashboard: React.FC = () => {
                               <ExternalLink className="w-3.5 h-3.5" /> Open PDF in New Tab
                             </a>
                             <a
-                              href={`/api/resumes/${app.resumeId}/file?download=true`}
+                              href={resumeApi.getFileUrl(app.resumeId, '?download=true')}
                               className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3.5 py-2 rounded-lg text-xs flex items-center gap-1.5 transition shadow-2xs"
                             >
                               <Download className="w-3.5 h-3.5" /> Download Candidate PDF (
@@ -1718,7 +1718,7 @@ export const RecruiterDashboard: React.FC = () => {
                             </span>
                             <div className="border border-slate-300 dark:border-slate-700 rounded-xl overflow-hidden bg-slate-900 h-80">
                               <iframe
-                                src={`/api/resumes/${app.resumeId}/file`}
+                                src={resumeApi.getFileUrl(app.resumeId)}
                                 title={`Candidate Resume PDF #${app.resumeId}`}
                                 className="w-full h-full border-0 bg-white"
                               />
