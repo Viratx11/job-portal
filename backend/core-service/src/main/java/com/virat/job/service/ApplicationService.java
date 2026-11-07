@@ -13,11 +13,11 @@ public interface ApplicationService {
 
     ApplicationResponse createApplication(Long candidateId, CreateApplicationRequest req) throws Exception;
 
-    ApplicationResponse getApplicationById(Long id) throws Exception;
+    ApplicationResponse getApplicationById(Long id, Long userId) throws Exception;
 
     List<ApplicationResponse> getMyApplications(Long candidateId);
 
-    List<ApplicationResponse> getApplicationsForJob(Long jobId);
+    List<ApplicationResponse> getApplicationsForJob(Long jobId, Long employerId) throws Exception;
 
     List<ApplicationResponse> getApplicationsForCompany(Long userId, CompanyApplicationFilterRequest filter) throws Exception;
 

@@ -37,6 +37,10 @@ public class ResumeResponse {
     private String githubUrl;
     private String portfolioUrl;
     private String websiteUrl;
+    private String leetcodeUrl;
+    private String codeforcesUrl;
+    private String codechefUrl;
+    private String hackerrankUrl;
 
     private String summary;
     private String uploadedFileUrl;

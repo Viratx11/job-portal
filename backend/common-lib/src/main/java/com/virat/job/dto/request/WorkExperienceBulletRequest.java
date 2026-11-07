@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,8 +19,11 @@ public class WorkExperienceBulletRequest {
 
     private String company;
 
-    @NotBlank(message = "Raw description is required")
     private String rawDescription;
+
+    private String techStack;
+
+    private List<String> technologies;
 
     private String achievementsHint;
 }

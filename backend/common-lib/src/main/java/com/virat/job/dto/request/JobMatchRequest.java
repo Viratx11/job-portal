@@ -20,6 +20,8 @@ public class JobMatchRequest {
     private List<String> preferredIndustries;
     private String candidateExperienceLevel;
     private List<String> candidateSkills;
+    private String candidateResumeSummary;
+    private List<String> candidateProjects;
 
     private String jobTitle;
     private String workMode;

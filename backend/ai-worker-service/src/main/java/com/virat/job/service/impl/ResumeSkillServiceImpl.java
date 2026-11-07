@@ -38,7 +38,9 @@ public class ResumeSkillServiceImpl implements ResumeSkillService {
                 .displayOrder(req.getDisplayOrder() != null ? req.getDisplayOrder() : 0)
                 .build();
 
-        return ResumeMapper.toSkillResponse(skillRepository.save(skill));
+        ResumeSkill saved = skillRepository.save(skill);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toSkillResponse(saved);
     }
 
     @Override
@@ -59,7 +61,9 @@ public class ResumeSkillServiceImpl implements ResumeSkillService {
         if (req.getYearsOfExperience() != null) skill.setYearsOfExperience(req.getYearsOfExperience());
         if (req.getDisplayOrder() != null) skill.setDisplayOrder(req.getDisplayOrder());
 
-        return ResumeMapper.toSkillResponse(skillRepository.save(skill));
+        ResumeSkill saved = skillRepository.save(skill);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toSkillResponse(saved);
     }
 
     @Override
@@ -68,6 +72,7 @@ public class ResumeSkillServiceImpl implements ResumeSkillService {
         assertOwner(resume, candidateId);
         ResumeSkill skill = getEntityById(skillId, resumeId);
         skillRepository.delete(skill);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
     }
 
     private ResumeSkill getEntityById(Long id, Long resumeId) throws Exception {

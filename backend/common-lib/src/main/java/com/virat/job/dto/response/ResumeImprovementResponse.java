@@ -22,6 +22,10 @@ public class ResumeImprovementResponse {
     private String summary;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Improvement {
         private String section;
         private String issue;

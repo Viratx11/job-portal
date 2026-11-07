@@ -22,4 +22,8 @@ public class PersonalInfo {
     private String githubUrl;
     private String portfolioUrl;
     private String websiteUrl;
+    private String leetcodeUrl;
+    private String codeforcesUrl;
+    private String codechefUrl;
+    private String hackerrankUrl;
 }

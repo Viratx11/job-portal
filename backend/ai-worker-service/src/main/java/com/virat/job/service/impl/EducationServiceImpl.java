@@ -39,7 +39,9 @@ public class EducationServiceImpl implements EducationService {
                 .displayOrder(req.getDisplayOrder() != null ? req.getDisplayOrder() : 0)
                 .build();
 
-        return ResumeMapper.toEducationResponse(educationRepository.save(education));
+        Education saved = educationRepository.save(education);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toEducationResponse(saved);
     }
 
     @Override
@@ -65,7 +67,9 @@ public class EducationServiceImpl implements EducationService {
         if (req.getDescription() != null) education.setDescription(req.getDescription());
         if (req.getDisplayOrder() != null) education.setDisplayOrder(req.getDisplayOrder());
 
-        return ResumeMapper.toEducationResponse(educationRepository.save(education));
+        Education saved = educationRepository.save(education);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toEducationResponse(saved);
     }
 
     @Override
@@ -74,6 +78,7 @@ public class EducationServiceImpl implements EducationService {
         assertOwner(resume, candidateId);
         Education education = getEntityById(educationId, resumeId);
         educationRepository.delete(education);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
     }
 
     private Education getEntityById(Long id, Long resumeId) throws Exception {

@@ -37,7 +37,9 @@ public class CertificationServiceImpl implements CertificationService {
                 .displayOrder(req.getDisplayOrder() != null ? req.getDisplayOrder() : 0)
                 .build();
 
-        return ResumeMapper.toCertificationResponse(certificationRepository.save(cert));
+        Certification saved = certificationRepository.save(cert);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toCertificationResponse(saved);
     }
 
     @Override
@@ -61,7 +63,9 @@ public class CertificationServiceImpl implements CertificationService {
         if (req.getCredentialUrl() != null) cert.setCredentialUrl(req.getCredentialUrl());
         if (req.getDisplayOrder() != null) cert.setDisplayOrder(req.getDisplayOrder());
 
-        return ResumeMapper.toCertificationResponse(certificationRepository.save(cert));
+        Certification saved = certificationRepository.save(cert);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toCertificationResponse(saved);
     }
 
     @Override
@@ -70,6 +74,7 @@ public class CertificationServiceImpl implements CertificationService {
         assertOwner(resume, candidateId);
         Certification cert = getEntityById(certId, resumeId);
         certificationRepository.delete(cert);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
     }
 
     private Certification getEntityById(Long id, Long resumeId) throws Exception {

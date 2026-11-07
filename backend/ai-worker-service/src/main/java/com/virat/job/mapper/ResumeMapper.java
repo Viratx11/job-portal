@@ -62,7 +62,11 @@ public class ResumeMapper {
                     .linkedinUrl(pi.getLinkedinUrl())
                     .githubUrl(pi.getGithubUrl())
                     .portfolioUrl(pi.getPortfolioUrl())
-                    .websiteUrl(pi.getWebsiteUrl());
+                    .websiteUrl(pi.getWebsiteUrl())
+                    .leetcodeUrl(pi.getLeetcodeUrl())
+                    .codeforcesUrl(pi.getCodeforcesUrl())
+                    .codechefUrl(pi.getCodechefUrl())
+                    .hackerrankUrl(pi.getHackerrankUrl());
         }
         return builder;
     }

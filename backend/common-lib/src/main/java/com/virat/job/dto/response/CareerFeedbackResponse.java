@@ -23,6 +23,10 @@ public class CareerFeedbackResponse {
     private String overallSummary;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Improvement {
         private String area;
         private String issue;
@@ -31,6 +35,10 @@ public class CareerFeedbackResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class JobTarget {
         private String jobTitle;
         private String reason;

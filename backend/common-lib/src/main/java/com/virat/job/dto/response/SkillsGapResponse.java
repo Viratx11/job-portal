@@ -25,6 +25,10 @@ public class SkillsGapResponse {
     private String summary;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class LearningRecommendation {
         private String skill;
         private String why;

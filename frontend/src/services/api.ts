@@ -126,6 +126,15 @@ export interface ApplicationNoteResponse {
   createdAt: string;
 }
 
+export interface ApplicationStatusHistoryResponse {
+  id: number;
+  fromStatus?: ApplicationStatus;
+  toStatus: ApplicationStatus;
+  changedByUserId?: number;
+  note?: string;
+  changedAt: string;
+}
+
 export interface ApplicationResponse {
   id: number;
   candidate?: UserResponse;
@@ -151,11 +160,22 @@ export interface ApplicationResponse {
   isRead?: boolean;
   isStarred?: boolean;
   notes?: ApplicationNoteResponse[];
+  statusHistory?: ApplicationStatusHistoryResponse[];
+  withdrawnAt?: string;
+  withdrawnReason?: string;
   appliedAt?: string;
+  updatedAt?: string;
   screening?: {
     overallScore?: number;
     skillsMatchScore?: number;
+    experienceMatchScore?: number;
+    educationMatchScore?: number;
+    shortlistStatus?: string;
     summary?: string;
+    matchedSkills?: string;
+    missingSkills?: string;
+    strengths?: string;
+    concerns?: string;
   };
 }
 
@@ -173,7 +193,16 @@ export interface ResumeResponse {
   phone?: string;
   city?: string;
   country?: string;
+  linkedinUrl?: string;
+  githubUrl?: string;
+  portfolioUrl?: string;
+  websiteUrl?: string;
+  leetcodeUrl?: string;
+  codeforcesUrl?: string;
+  personalInfo?: any;
   summary?: string;
+  uploadedFileUrl?: string;
+  uploadedFileName?: string;
   workExperiences?: any[];
   educations?: any[];
   skills?: any[];
@@ -253,6 +282,9 @@ export const getJobById = (id: number) =>
 export const createJob = (data: JobRequestPayload) =>
   apiClient.post<JobResponse>('/api/jobs', data).then((r) => r.data);
 
+export const updateJob = (id: number, data: JobRequestPayload) =>
+  apiClient.put<JobResponse>(`/api/jobs/${id}`, data).then((r) => r.data);
+
 export const publishJob = (id: number) =>
   apiClient.patch<JobResponse>(`/api/jobs/${id}/publish`).then((r) => r.data);
 
@@ -295,10 +327,22 @@ export const applicationApi = {
 export const resumeApi = {
   createResume: (data: { title: string; template?: ResumeTemplate; visibility?: ResumeVisibility; isDefault?: boolean }) =>
     apiClient.post<ResumeResponse>('/api/resumes', data).then((r) => r.data),
+  createFromLatex: (latexCode: string, title?: string) =>
+    apiClient.post<ApiResponse<ResumeResponse>>('/api/ai/resume/create-from-latex', { latexCode, title }).then((r) => r.data.data),
+  uploadResume: (file: File, title?: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    if (title) formData.append('title', title);
+    return apiClient
+      .post<ResumeResponse>('/api/resumes/upload', formData)
+      .then((r) => r.data);
+  },
   getMyResumes: () => apiClient.get<ResumeResponse[]>('/api/resumes').then((r) => r.data),
   getResume: (resumeId: number) => apiClient.get<ResumeResponse>(`/api/resumes/${resumeId}`).then((r) => r.data),
   updateResume: (resumeId: number, data: { title?: string; template?: ResumeTemplate; visibility?: ResumeVisibility; summary?: string }) =>
     apiClient.put<ResumeResponse>(`/api/resumes/${resumeId}`, data).then((r) => r.data),
+  formatResumeWithTemplate: (resumeId: number, data: { template: ResumeTemplate; customInstructions?: string }) =>
+    apiClient.post<ResumeResponse>(`/api/resumes/${resumeId}/format-template`, data).then((r) => r.data),
   updatePersonalInfo: (resumeId: number, data: any) =>
     apiClient.put<ResumeResponse>(`/api/resumes/${resumeId}/personal-info`, data).then((r) => r.data),
   setDefault: (resumeId: number) => apiClient.patch<ResumeResponse>(`/api/resumes/${resumeId}/set-default`).then((r) => r.data),
@@ -377,4 +421,10 @@ export const aiApi = {
     apiClient.post<ApiResponse<any>>('/api/ai/search/enhance', { query }).then((r) => r.data.data),
   calculateJobMatch: (data: any) =>
     apiClient.post<ApiResponse<any>>('/api/ai/search/job-match', data).then((r) => r.data.data),
+  extractProjectAi: (data: { url?: string; description?: string }) =>
+    apiClient.post<ApiResponse<{ title: string; technologiesUsed: string; liveUrl?: string; githubUrl?: string; bulletPoints: string; bulletList?: string[] }>>('/api/ai/resume/extract-project', data).then((r) => r.data.data),
+  extractCertAi: (data: { url?: string; description?: string }) =>
+    apiClient.post<ApiResponse<{ certificationName: string; issuingOrganization: string; credentialUrl?: string; issueDate?: string }>>('/api/ai/resume/extract-cert', data).then((r) => r.data.data),
+  extractJobFromUrl: (url: string) =>
+    apiClient.post<ApiResponse<any>>('/api/ai/job/extract-url', { url }).then((r) => r.data.data),
 };

@@ -24,4 +24,12 @@ public class ProjectResponse {
     private LocalDate endDate;
     private Boolean isOngoing;
     private Integer displayOrder;
+
+    public String getLiveUrl() {
+        return projectUrl;
+    }
+
+    public String getGithubUrl() {
+        return sourceCodeUrl;
+    }
 }

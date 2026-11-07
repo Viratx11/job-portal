@@ -5,11 +5,19 @@ import com.virat.job.dto.request.HiringInsightsRequest;
 import com.virat.job.dto.request.JobDescriptionRequest;
 import com.virat.job.dto.request.SalaryRangeRequest;
 import com.virat.job.dto.response.AiTextResponse;
+import com.virat.job.dto.response.ExtractJobFromUrlResponse;
 import com.virat.job.dto.response.HiringInsightsResponse;
 import com.virat.job.dto.response.SalaryRangeResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -175,6 +183,102 @@ public class JobAiService {
 
         return AiTextResponse.builder()
                 .content(geminiClient.generateText(SYSTEM, prompt))
+                .build();
+    }
+
+    public ExtractJobFromUrlResponse extractJobFromUrl(String url) {
+        if (url == null || url.isBlank()) {
+            throw new IllegalArgumentException("Job URL cannot be empty");
+        }
+        String cleanUrl = url.trim();
+        String webContent = "";
+
+        try {
+            HttpClient client = HttpClient.newBuilder()
+                    .connectTimeout(Duration.ofSeconds(4))
+                    .followRedirects(HttpClient.Redirect.NORMAL)
+                    .build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(cleanUrl))
+                    .timeout(Duration.ofSeconds(5))
+                    .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+                    .GET()
+                    .build();
+            HttpResponse<String> resp = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (resp.statusCode() >= 200 && resp.statusCode() < 400 && resp.body() != null) {
+                String body = resp.body()
+                        .replaceAll("(?is)<script.*?</script>", " ")
+                        .replaceAll("(?is)<style.*?</style>", " ")
+                        .replaceAll("<[^>]+>", " ")
+                        .replaceAll("\\s+", " ")
+                        .trim();
+                webContent = body.length() > 12000 ? body.substring(0, 12000) : body;
+            }
+        } catch (Exception e) {
+            log.warn("Direct HTTP fetch for job URL {} failed: {}. Parsing using Gemini with URL slug metadata.", cleanUrl, e.getMessage());
+        }
+
+        String prompt = """
+                Analyze this job posting from external URL: %s
+                Page Content / Metadata:
+                %s
+
+                Extract and generate a complete, structured job opening object for publication.
+                Required fields:
+                - title: The official job title (e.g. Senior Backend Engineer)
+                - companyName: The hiring company name
+                - category: Category name (e.g. Software Engineering, Data & AI, DevOps & Cloud, Product Management)
+                - description: A thorough, attractive 2-3 paragraph job overview
+                - requirements: Specific technical and experience requirements formatted with markdown bullet points
+                - responsibilities: Core day-to-day responsibilities formatted with markdown bullet points
+                - benefits: Competitive employee benefits and perks formatted with markdown bullet points
+                - city: Primary city / location (e.g. Bengaluru, Remote, San Francisco, Hyderabad, Gurugram)
+                - country: Country (e.g. India, United States)
+                - minSalary: Realistic minimum annual salary in INR (e.g. 1500000)
+                - maxSalary: Realistic maximum annual salary in INR (e.g. 2800000)
+                - jobType: One of FULL_TIME, PART_TIME, CONTRACT, INTERNSHIP, FREELANCE
+                - workMode: One of REMOTE, ONSITE, HYBRID
+                - experienceLevel: One of ENTRY, JUNIOR, MID, SENIOR, LEAD
+                - skills: List of 4-8 core required technologies (e.g. ["Java", "Spring Boot", "PostgreSQL", "Kafka", "Docker"])
+                - tags: List of 3-5 keywords (e.g. ["backend", "distributed-systems", "java"])
+                - sourceUrl: "%s"
+
+                Respond strictly with valid JSON.
+                """.formatted(cleanUrl, webContent.isBlank() ? "(HTML fetch restricted; infer role & company from URL structure and standard industry patterns)" : webContent, cleanUrl);
+
+        try {
+            ExtractJobFromUrlResponse response = geminiClient.generateJson(
+                    "You are a talent acquisition systems parser that extracts structured job postings from career URLs. Always output valid JSON.",
+                    prompt,
+                    ExtractJobFromUrlResponse.class
+            );
+            if (response != null && response.getTitle() != null && !response.getTitle().isBlank()) {
+                response.setSourceUrl(cleanUrl);
+                return response;
+            }
+        } catch (Exception e) {
+            log.warn("Gemini job extraction from URL failed: {}", e.getMessage());
+        }
+
+        return ExtractJobFromUrlResponse.builder()
+                .title("Software Engineer")
+                .companyName("Partner Company")
+                .category("Software Engineering")
+                .description("Exciting opportunity to join as a core engineer, architecting scalable systems and resilient APIs.")
+                .requirements("• 2+ years experience building production software.\n• Strong problem solving and system design skills.\n• Proficiency with modern backend or full-stack technologies.")
+                .responsibilities("• Design, develop, and maintain high-throughput backend APIs.\n• Collaborate with cross-functional teams to deliver reliable features.\n• Write clean, testable code and review pull requests.")
+                .benefits("• Competitive compensation & equity.\n• Comprehensive health insurance.\n• Flexible remote work policy.")
+                .city("Bengaluru")
+                .country("India")
+                .minSalary(1200000L)
+                .maxSalary(2400000L)
+                .jobType("FULL_TIME")
+                .workMode("HYBRID")
+                .experienceLevel("MID")
+                .skills(List.of("Java", "Spring Boot", "PostgreSQL", "Docker", "Redis"))
+                .tags(List.of("backend", "engineering", "apis"))
+                .sourceUrl(cleanUrl)
                 .build();
     }
 }

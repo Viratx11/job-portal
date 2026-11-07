@@ -44,6 +44,22 @@ public class Project {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    public String getLiveUrl() {
+        return projectUrl;
+    }
+
+    public void setLiveUrl(String liveUrl) {
+        this.projectUrl = liveUrl;
+    }
+
+    public String getGithubUrl() {
+        return sourceCodeUrl;
+    }
+
+    public void setGithubUrl(String githubUrl) {
+        this.sourceCodeUrl = githubUrl;
+    }
+
     @Column(nullable = false)
     @Builder.Default
     private Boolean isOngoing = false;

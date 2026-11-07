@@ -35,7 +35,9 @@ public class AwardServiceImpl implements AwardService {
                 .displayOrder(req.getDisplayOrder() != null ? req.getDisplayOrder() : 0)
                 .build();
 
-        return ResumeMapper.toAwardResponse(awardRepository.save(award));
+        Award saved = awardRepository.save(award);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toAwardResponse(saved);
     }
 
     @Override
@@ -57,7 +59,9 @@ public class AwardServiceImpl implements AwardService {
         if (req.getDescription() != null) award.setDescription(req.getDescription());
         if (req.getDisplayOrder() != null) award.setDisplayOrder(req.getDisplayOrder());
 
-        return ResumeMapper.toAwardResponse(awardRepository.save(award));
+        Award saved = awardRepository.save(award);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toAwardResponse(saved);
     }
 
     @Override
@@ -66,6 +70,7 @@ public class AwardServiceImpl implements AwardService {
         assertOwner(resume, candidateId);
         Award award = getEntityById(awardId, resumeId);
         awardRepository.delete(award);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
     }
 
     private Award getEntityById(Long id, Long resumeId) throws Exception {

@@ -25,6 +25,10 @@ public class ResumeParseResponse {
     private List<Language> languages;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PersonalInfo {
         private String fullName;
         private String email;
@@ -33,9 +37,17 @@ public class ResumeParseResponse {
         private String linkedIn;
         private String github;
         private String website;
+        private String leetcode;
+        private String codeforces;
+        private String codechef;
+        private String hackerrank;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class WorkExperience {
         private String companyName;
         private String jobTitle;
@@ -46,6 +58,10 @@ public class ResumeParseResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Education {
         private String schoolName;
         private String degree;
@@ -55,6 +71,10 @@ public class ResumeParseResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Certification {
         private String name;
         private String issuer;
@@ -62,6 +82,10 @@ public class ResumeParseResponse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Language {
         private String language;
         private String proficiency;

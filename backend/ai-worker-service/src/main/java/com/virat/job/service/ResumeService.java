@@ -12,6 +12,8 @@ public interface ResumeService {
 
     ResumeResponse createResume(Long candidateId, CreateResumeRequest req) throws Exception;
 
+    ResumeResponse uploadResumeFile(Long candidateId, org.springframework.web.multipart.MultipartFile file, String title) throws Exception;
+
     ResumeResponse getResume(Long resumeId, Long candidateId) throws Exception;
 
     List<ResumeResponse> getMyResumes(Long candidateId);
@@ -25,4 +27,12 @@ public interface ResumeService {
     void deleteResume(Long resumeId, Long candidateId) throws Exception;
 
     Resume getResumeEntityById(Long resumeId) throws Exception;
+
+    byte[] getOrGenerateResumePdfBytes(Long resumeId) throws Exception;
+
+    ResumeResponse createResumeFromLatex(Long candidateId, String latexCode, String customTitle) throws Exception;
+
+    ResumeResponse formatResumeWithTemplate(Long resumeId, Long candidateId, com.virat.job.dto.request.FormatResumeAiRequest req) throws Exception;
+
+    void syncResumeSummaryAndPdf(Long resumeId);
 }

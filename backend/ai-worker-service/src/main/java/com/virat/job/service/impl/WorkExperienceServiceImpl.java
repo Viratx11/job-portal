@@ -42,7 +42,9 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
                 .displayOrder(req.getDisplayOrder() != null ? req.getDisplayOrder() : 0)
                 .build();
 
-        return ResumeMapper.toWorkExperienceResponse(workExperienceRepository.save(we));
+        WorkExperience saved = workExperienceRepository.save(we);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toWorkExperienceResponse(saved);
     }
 
     @Override
@@ -70,7 +72,9 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         if (req.getTechnologies() != null) we.setTechnologies(req.getTechnologies());
         if (req.getDisplayOrder() != null) we.setDisplayOrder(req.getDisplayOrder());
 
-        return ResumeMapper.toWorkExperienceResponse(workExperienceRepository.save(we));
+        WorkExperience saved = workExperienceRepository.save(we);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
+        return ResumeMapper.toWorkExperienceResponse(saved);
     }
 
     @Override
@@ -79,6 +83,7 @@ public class WorkExperienceServiceImpl implements WorkExperienceService {
         assertOwner(resume, candidateId);
         WorkExperience we = getEntityById(experienceId, resumeId);
         workExperienceRepository.delete(we);
+        resumeService.syncResumeSummaryAndPdf(resumeId);
     }
 
     private WorkExperience getEntityById(Long id, Long resumeId) throws Exception {

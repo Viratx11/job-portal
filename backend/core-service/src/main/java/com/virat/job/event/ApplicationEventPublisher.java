@@ -1,5 +1,6 @@
 package com.virat.job.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.virat.job.service.CompanyService;
 import com.virat.job.service.JobService;
 import com.virat.job.service.UserService;
@@ -25,10 +26,11 @@ public class ApplicationEventPublisher {
     public static final String TOPIC_STATUS_CHANGED = "application.status.changed";
     public static final String TOPIC_NOTE_ADDED = "application.note.added";
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
     private final UserService userService;
     private final JobService jobService;
     private final CompanyService companyService;
+    private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
     public void publishStatusChanged(JobApplication app, ApplicationStatus oldStatus, String note) {
         try {
@@ -53,7 +55,7 @@ public class ApplicationEventPublisher {
                     .changedAt(LocalDateTime.now())
                     .build();
 
-            kafkaTemplate.send(TOPIC_STATUS_CHANGED, String.valueOf(app.getId()), event);
+            kafkaTemplate.send(TOPIC_STATUS_CHANGED, String.valueOf(app.getId()), objectMapper.writeValueAsString(event));
             log.info("Published status-changed event for application {}", app.getId());
 
         } catch (Exception e) {
@@ -81,7 +83,7 @@ public class ApplicationEventPublisher {
                     .addedAt(LocalDateTime.now())
                     .build();
 
-            kafkaTemplate.send(TOPIC_NOTE_ADDED, String.valueOf(app.getId()), event);
+            kafkaTemplate.send(TOPIC_NOTE_ADDED, String.valueOf(app.getId()), objectMapper.writeValueAsString(event));
             log.info("Published note-added event for application {}", app.getId());
 
         } catch (Exception e) {

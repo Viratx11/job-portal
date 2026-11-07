@@ -19,6 +19,10 @@ public class InterviewQuestionsResponse {
     private List<Question> questions;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Question {
         private String question;
         private String category;

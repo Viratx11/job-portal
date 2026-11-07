@@ -1,6 +1,7 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/AiWorkerServiceApplication.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/client/GeminiClient.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/config/GeminiProperties.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/config/GlobalExceptionHandler.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/config/RestClientConfig.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/controller/AiApplicationController.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/controller/AiCompanyController.java
@@ -15,6 +16,7 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/controller/ResumeController.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/controller/ResumeParseJobController.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/controller/ResumeSkillController.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/controller/VectorMatchController.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/controller/WorkExperienceController.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/mapper/ResumeMapper.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/modal/Award.java
@@ -36,6 +38,7 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/repository/ResumeRepository.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/repository/ResumeSkillRepository.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/repository/WorkExperienceRepository.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/security/PromptInjectionSanitizer.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/service/ApplicationAiService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/service/AwardService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/ai-worker-service/src/main/java/com/virat/job/service/CertificationService.java

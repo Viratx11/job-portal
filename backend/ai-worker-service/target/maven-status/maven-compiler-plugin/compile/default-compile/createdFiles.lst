@@ -22,6 +22,7 @@ com/virat/job/modal/Education.class
 com/virat/job/client/GeminiClient.class
 com/virat/job/modal/Language$LanguageBuilder.class
 com/virat/job/service/ResumeParseJobService.class
+com/virat/job/security/PromptInjectionSanitizer.class
 com/virat/job/repository/ResumeRepository.class
 com/virat/job/modal/ResumeParseJob.class
 com/virat/job/mapper/ResumeMapper.class
@@ -30,6 +31,7 @@ com/virat/job/repository/CertificationRepository.class
 com/virat/job/controller/EducationController.class
 com/virat/job/controller/AiCompanyController.class
 com/virat/job/service/AwardService.class
+com/virat/job/controller/VectorMatchController.class
 com/virat/job/controller/AiResumeController.class
 com/virat/job/service/EducationService.class
 com/virat/job/controller/WorkExperienceController.class
@@ -46,12 +48,12 @@ com/virat/job/service/impl/ResumeSkillServiceImpl.class
 com/virat/job/controller/ProjectController.class
 com/virat/job/service/impl/LanguageServiceImpl.class
 com/virat/job/service/JobAiService.class
+com/virat/job/config/GlobalExceptionHandler.class
 com/virat/job/AiWorkerServiceApplication.class
 com/virat/job/service/impl/ProjectServiceImpl.class
 com/virat/job/repository/LanguageRepository.class
 com/virat/job/modal/Award$AwardBuilder.class
 com/virat/job/modal/ResumeSkill.class
-com/virat/job/service/impl/ResumeServiceImpl.class
 com/virat/job/controller/ResumeSkillController.class
 com/virat/job/repository/ResumeSkillRepository.class
 com/virat/job/controller/CertificationController.class
@@ -59,6 +61,7 @@ com/virat/job/service/CompanyAiService.class
 com/virat/job/modal/WorkExperience.class
 com/virat/job/repository/WorkExperienceRepository.class
 com/virat/job/controller/AwardController.class
+com/virat/job/service/ResumeAiService$GitHubRepoMeta.class
 com/virat/job/modal/Certification.class
 com/virat/job/service/ResumeService.class
 com/virat/job/controller/ResumeController.class

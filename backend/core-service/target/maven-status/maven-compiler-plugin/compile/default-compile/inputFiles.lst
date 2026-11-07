@@ -3,7 +3,8 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/PayLoad/LoginRequest.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/PayLoad/SignUpRequest.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/PayLoad/UpdateUserRequest.java
-/Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/config/KafkaProducerConfig.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/config/GlobalExceptionHandler.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/config/KafkaConfig.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/config/SecurityConfig.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/controller/ApplicationController.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/controller/ApplicationNoteController.java
@@ -34,6 +35,7 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/modal/JobCategory.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/modal/JobSkill.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/modal/JobTag.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/modal/OutboxEvent.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/modal/SocialLink.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/modal/User.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/modal/embeddable/ApplicationAttachment.java
@@ -50,12 +52,15 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/repository/JobSkillRepository.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/repository/JobSpecification.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/repository/JobTagRepository.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/repository/OutboxRepository.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/repository/UserRepository.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/security/CustomUserDetailsService.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/security/JwtAuthenticationFilter.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/security/JwtConstant.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/security/JwtProvider.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/ApplicationNoteService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/ApplicationService.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/ApplicationSlotLockService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/AsyncScreeningService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/AuthService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/CompanyService.java
@@ -63,6 +68,7 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/JobService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/JobSkillService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/JobTagService.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/OutboxDispatcherService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/UserService.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/impl/ApplicationNoteServiceImpl.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/core-service/src/main/java/com/virat/job/service/impl/ApplicationServiceImpl.java

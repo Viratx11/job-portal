@@ -38,7 +38,12 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/CompanyRequest.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/CompanyTaglineRequest.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/CoverLetterRequest.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/CreateResumeFromLatexRequest.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/CreateResumeRequest.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/ExtractCertAiRequest.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/ExtractJobFromUrlRequest.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/ExtractProjectAiRequest.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/FormatResumeAiRequest.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/HiringInsightsRequest.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/InterviewQuestionsRequest.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/request/JobAlertSuggestRequest.java
@@ -77,6 +82,9 @@
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/CompanySummaryResponse.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/CompanyTaglineResponse.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/EducationResponse.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/ExtractCertAiResponse.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/ExtractJobFromUrlResponse.java
+/Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/ExtractProjectAiResponse.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/HiringInsightsResponse.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/InterviewQuestionsResponse.java
 /Users/viratkumar/job-portal-workspace/nexus-hire/backend/common-lib/src/main/java/com/virat/job/dto/response/InterviewResponse.java

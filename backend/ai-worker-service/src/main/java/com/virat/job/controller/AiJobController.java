@@ -1,10 +1,12 @@
 package com.virat.job.controller;
 
+import com.virat.job.dto.request.ExtractJobFromUrlRequest;
 import com.virat.job.dto.request.HiringInsightsRequest;
 import com.virat.job.dto.request.JobDescriptionRequest;
 import com.virat.job.dto.request.SalaryRangeRequest;
 import com.virat.job.dto.response.AiTextResponse;
 import com.virat.job.dto.response.ApiResponse;
+import com.virat.job.dto.response.ExtractJobFromUrlResponse;
 import com.virat.job.dto.response.HiringInsightsResponse;
 import com.virat.job.dto.response.SalaryRangeResponse;
 import com.virat.job.service.JobAiService;
@@ -73,5 +75,12 @@ public class AiJobController {
             @RequestParam(required = false) String description) {
         return ResponseEntity.ok(ApiResponse.success("Tags recommended",
                 jobAiService.recommendTagsForJob(title, description)));
+    }
+
+    @PostMapping("/extract-url")
+    public ResponseEntity<ApiResponse<ExtractJobFromUrlResponse>> extractJobFromUrl(
+            @Valid @RequestBody ExtractJobFromUrlRequest request) {
+        return ResponseEntity.ok(ApiResponse.success("Job details extracted from URL",
+                jobAiService.extractJobFromUrl(request.getUrl())));
     }
 }

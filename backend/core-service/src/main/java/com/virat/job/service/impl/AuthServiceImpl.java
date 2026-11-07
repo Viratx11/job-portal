@@ -56,7 +56,11 @@ public class AuthServiceImpl implements AuthService {
                 .build();
         User savedUser=userRepository.save(user);
 
-        Authentication authentication=new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                user.getEmail(),
+                user.getPassword(),
+                java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority(savedUser.getRole().name()))
+        );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt= jwtProvider.generateJwtToken(authentication,savedUser.getId());

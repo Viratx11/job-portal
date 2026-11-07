@@ -19,21 +19,25 @@ import com.virat.job.modal.ApplicationNote;
 import com.virat.job.modal.ApplicationScreening;
 import com.virat.job.modal.ApplicationStatusHistory;
 import com.virat.job.modal.JobApplication;
+import com.virat.job.modal.OutboxEvent;
+import com.virat.job.repository.OutboxRepository;
 import com.virat.job.repository.ApplicationNoteRepository;
 import com.virat.job.repository.ApplicationScreeningRepository;
 import com.virat.job.repository.ApplicationSpecification;
 import com.virat.job.repository.ApplicationStatusHistoryRepository;
 import com.virat.job.repository.JobApplicationRepository;
 import com.virat.job.service.ApplicationService;
-import com.virat.job.service.AsyncScreeningService;
+import com.virat.job.service.ApplicationSlotLockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,11 +48,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationScreeningRepository screeningRepository;
     private final ApplicationStatusHistoryRepository historyRepository;
     private final ApplicationNoteRepository noteRepository;
+    private final ApplicationSlotLockService slotLockService;
     private final JobService jobService;
     private final CompanyService companyService;
     private final UserService userService;
     private final ApplicationEventPublisher eventPublisher;
-    private final AsyncScreeningService asyncScreeningService;
+    private final OutboxRepository outboxRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     @Transactional
@@ -59,14 +65,36 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         JobResponse job = jobService.getJobById(req.getJobId());
 
-        // ResumeResponse resume = resumeClient.getResumeById(req.getResumeId(), candidateId);
-        // if (!resume.getCandidateId().equals(candidateId)) {
-        //     throw new Exception("Resume does not belong to you");
-        // }
+        int maxOpenings = job.getOpenings() != null ? job.getOpenings() : 10;
+        boolean locked = slotLockService.acquireSlot(job.getId(), maxOpenings);
+        if (!locked) {
+            throw new RuntimeException("All application slots for this job opening are currently full.");
+        }
 
         JobApplication application = ApplicationMapper.toEntity(req, candidateId,
                 job.getCompanyId(), job.getEmployerId());
         application = applicationRepository.save(application);
+        try {
+            jobService.incrementApplicationCount(job.getId());
+        } catch (Exception ignored) {
+        }
+
+        String payloadJson = objectMapper.writeValueAsString(Map.of(
+            "applicationId", application.getId(),
+            "jobId", job.getId(),
+            "resumeId", application.getResumeId() != null ? application.getResumeId() : 0L,
+            "jobDescription", job.getDescription() != null ? job.getDescription() : job.getTitle(),
+            "resumeText", req.getCoverLetter() != null ? req.getCoverLetter() : ""
+        ));
+
+        outboxRepository.save(OutboxEvent.builder()
+            .aggregateType("JOB_APPLICATION")
+            .aggregateId(application.getId())
+            .eventType("APPLICATION_CREATED")
+            .payload(payloadJson)
+            .processed(false)
+            .createdAt(LocalDateTime.now())
+            .build());
 
         historyRepository.save(ApplicationStatusHistory.builder()
                 .application(application)
@@ -76,16 +104,17 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .note("Application submitted")
                 .build());
 
-        // Fire AI screening in background — does not block the candidate's response
-        asyncScreeningService.runScreeningAsync(application);
-
         return buildFullResponse(application);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ApplicationResponse getApplicationById(Long id) throws Exception {
-        return buildFullResponse(getApplicationEntity(id));
+    public ApplicationResponse getApplicationById(Long id, Long userId) throws Exception {
+        JobApplication application = getApplicationEntity(id);
+        if (!application.getCandidateId().equals(userId) && !application.getEmployerId().equals(userId)) {
+            throw new Exception("You do not have permission to view this application");
+        }
+        return buildFullResponse(application);
     }
 
     @Override
@@ -97,7 +126,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ApplicationResponse> getApplicationsForJob(Long jobId) {
+    public List<ApplicationResponse> getApplicationsForJob(Long jobId, Long employerId) throws Exception {
+        JobResponse job = jobService.getJobById(jobId);
+        if (!job.getEmployerId().equals(employerId)) {
+            throw new Exception("You are not the employer for this job");
+        }
         return applicationRepository.findByJobId(jobId)
                 .stream().map(this::buildFullResponse).collect(Collectors.toList());
     }
@@ -187,6 +220,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .build());
 
         eventPublisher.publishStatusChanged(application, oldStatus, req.getReason());
+        slotLockService.releaseSlot(application.getJobId());
 
         return buildFullResponse(application);
     }
@@ -214,6 +248,26 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void deleteApplication(Long applicationId, Long candidateId) throws Exception {
         JobApplication application = getApplicationEntity(applicationId);
         assertCandidate(application, candidateId);
+
+        List<ApplicationStatusHistory> history =
+                historyRepository.findByApplicationIdOrderByChangedAtAsc(applicationId);
+        if (!history.isEmpty()) {
+            historyRepository.deleteAll(history);
+        }
+
+        List<ApplicationNote> notes =
+                noteRepository.findByApplicationIdOrderByCreatedAtDesc(applicationId);
+        if (!notes.isEmpty()) {
+            noteRepository.deleteAll(notes);
+        }
+
+        screeningRepository.findByApplicationId(applicationId)
+                .ifPresent(screeningRepository::delete);
+
+        if (application.getStatus() != ApplicationStatus.WITHDRAWN) {
+            slotLockService.releaseSlot(application.getJobId());
+        }
+
         applicationRepository.delete(application);
     }
 

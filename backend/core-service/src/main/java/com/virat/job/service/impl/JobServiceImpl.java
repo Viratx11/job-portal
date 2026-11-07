@@ -22,6 +22,7 @@ import com.virat.job.service.JobSkillService;
 import com.virat.job.service.JobTagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "jobs", allEntries = true)
     public JobResponse createJob(Long employerId, JobRequest req) throws Exception {
         CompanyResponse company = companyService.getMyCompany(employerId);
 
@@ -137,6 +139,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "jobs", allEntries = true)
     public JobResponse updateJob(Long jobId, Long employerId, JobRequest req) throws Exception {
         Job job = getJobEntityById(jobId);
         assertEmployer(job, employerId);
@@ -169,6 +172,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "jobs", allEntries = true)
     public JobResponse publishJob(Long jobId, Long employerId) throws Exception {
         Job job = getJobEntityById(jobId);
         assertEmployer(job, employerId);
@@ -182,6 +186,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "jobs", allEntries = true)
     public JobResponse closeJob(Long jobId, Long employerId) throws Exception {
         Job job = getJobEntityById(jobId);
         assertEmployer(job, employerId);
@@ -193,6 +198,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "jobs", allEntries = true)
     public void deleteJob(Long jobId, Long employerId) throws Exception {
         Job job = getJobEntityById(jobId);
         assertEmployer(job, employerId);
